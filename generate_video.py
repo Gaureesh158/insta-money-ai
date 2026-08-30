@@ -7,8 +7,11 @@ VIDEO_HEIGHT = 1920
 FPS = 30
 
 
-def generate_video(image_file="background.jpg", audio_file="voice.mp3",
-                   output_file="reel.mp4"):
+def generate_video(
+    image_file="background.jpg",
+    audio_file="voice.mp3",
+    output_file="reel.mp4"
+):
 
     if not os.path.exists(image_file):
         raise FileNotFoundError(f"{image_file} not found.")
@@ -18,18 +21,32 @@ def generate_video(image_file="background.jpg", audio_file="voice.mp3",
 
     audio = AudioFileClip(audio_file)
 
-    video = (
-        ImageClip(image_file)
-        .resized(height=VIDEO_HEIGHT)
-        .cropped(
-            x_center=VIDEO_WIDTH / 2,
-            y_center=VIDEO_HEIGHT / 2,
-            width=VIDEO_WIDTH,
-            height=VIDEO_HEIGHT
-        )
-        .with_duration(audio.duration)
-        .with_audio(audio)
+    video = ImageClip(image_file)
+
+    # Resize image so it covers the complete vertical frame
+    scale = max(
+        VIDEO_WIDTH / video.w,
+        VIDEO_HEIGHT / video.h
     )
+
+    new_width = int(video.w * scale)
+    new_height = int(video.h * scale)
+
+    video = video.resized(
+        width=new_width,
+        height=new_height
+    )
+
+    # Center crop to 1080x1920
+    video = video.cropped(
+        x_center=video.w / 2,
+        y_center=video.h / 2,
+        width=VIDEO_WIDTH,
+        height=VIDEO_HEIGHT
+    )
+
+    video = video.with_duration(audio.duration)
+    video = video.with_audio(audio)
 
     video.write_videofile(
         output_file,
