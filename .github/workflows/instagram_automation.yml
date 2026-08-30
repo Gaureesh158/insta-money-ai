@@ -42,3 +42,12 @@ jobs:
       - name: Generate video
         run: |
           python generate_video.py
+
+      - name: Upload generated Reel
+        uses: actions/upload-artifact@v4
+        with:
+          name: instagram-reel
+          path: |
+            reel.mp4
+            reel_content.txt
+            script.txt
