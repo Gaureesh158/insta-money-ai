@@ -1,7 +1,6 @@
 import os
 from groq import Groq
 
-# Get Groq API key from environment
 api_key = os.getenv("GROQ_API_KEY")
 
 if not api_key:
@@ -59,4 +58,23 @@ HASHTAGS:
 
 if __name__ == "__main__":
     result = generate_reel()
+
     print(result)
+
+    # Save the complete generated content
+    with open("reel_content.txt", "w", encoding="utf-8") as file:
+        file.write(result)
+
+    # Extract the SCRIPT section for voice generation
+    if "SCRIPT:" in result:
+        script = result.split("SCRIPT:", 1)[1]
+
+        if "CAPTION:" in script:
+            script = script.split("CAPTION:", 1)[0]
+
+        script = script.strip()
+
+        with open("script.txt", "w", encoding="utf-8") as file:
+            file.write(script)
+
+        print("Script saved to script.txt")
