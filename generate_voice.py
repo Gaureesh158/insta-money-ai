@@ -44,10 +44,15 @@ def generate_voice(text, output_file="voice.mp3"):
 
 
 if __name__ == "__main__":
-    test_text = """
-    Agar aap India mein online earning start karna chahte ho,
-    to sabse pehle ek simple skill choose karo aur usse
-    clients ke liye use karna start karo.
-    """
+    script_file = "script.txt"
 
-    generate_voice(test_text)
+    if not os.path.exists(script_file):
+        raise FileNotFoundError("script.txt not found.")
+
+    with open(script_file, "r", encoding="utf-8") as file:
+        script = file.read().strip()
+
+    if not script:
+        raise ValueError("script.txt is empty.")
+
+    generate_voice(script)
