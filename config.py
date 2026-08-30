@@ -1,0 +1,13 @@
+import os
+
+# Instagram settings
+INSTAGRAM_USERNAME = os.getenv("INSTAGRAM_USERNAME")
+INSTAGRAM_PASSWORD = os.getenv("INSTAGRAM_PASSWORD")
+
+# AI settings
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+
+# Video settings
+VIDEO_WIDTH = 1080
+VIDEO_HEIGHT = 1920
+VIDEO_DURATION = 30
